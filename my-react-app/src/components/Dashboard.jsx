@@ -1,23 +1,25 @@
-import {useState} from "react";
-
-export default function Dashboard({auth, onLogout, onFetchRecipes}) {
+import { useState } from "react";
+ 
+export default function Dashboard({ auth, onLogout, onFetchRecipes }) {
   const [recipes, setRecipes] = useState([]);
   const [err, setErr] = useState("");
   const [loading, setLoading] = useState(false);
-
+ 
   const loadRecipes = async () => {
     setErr("");
     setLoading(true);
     try {
+      // Use the token (auth) to get secret data
       const data = await onFetchRecipes(auth);
       setRecipes(data);
-    }catch (ex) {
-        setErr(ex.message || "Failed to load recipes");
+    } catch (ex) {
+      setErr(ex.message || "Failed to load recipes");
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
-    return (
+  };
+ 
+  return (
     <div className="dashboard">
       <h1>Recipe Dashboard</h1>
       <button onClick={loadRecipes} disabled={loading}>
